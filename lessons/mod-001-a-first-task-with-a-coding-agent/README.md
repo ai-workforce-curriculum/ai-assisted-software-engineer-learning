@@ -51,6 +51,38 @@ Every delegated task runs through the same four steps. When a task goes wrong, i
 
 The first task in a new repo often goes around this loop two or three times. By the tenth task in the same repo, one pass is normal.
 
+## Which tasks belong in the loop
+
+Not every task should be delegated, and the quickest way to sour on coding agents is to send them work they can't do well. A good first-pass filter:
+
+**Favor tasks where:**
+
+- **The right answer is clear to you.** You're using the agent for speed, not for ideas. If you don't know what "done" looks like, the agent will pick a direction, and you'll spend the review re-deciding whether it was the right one.
+- **The scope is contained.** One file, one function, one endpoint. Multi-file refactors and cross-cutting concerns are later-module territory; starting there teaches you the wrong lessons about the tool.
+- **There's prior art in the repo.** If a similar change exists, the agent can usually mirror it. "Do what `billing/emails.py` does, but for signup" is a workable context line. Greenfield features without anchors are harder.
+- **Verification is cheap.** Tests exist, the behavior is observable, or the diff is small enough to read line by line. If you can't check the output, the agent isn't helping — it's just moving the uncertainty into code.
+
+**Hold back, for now, when:**
+
+- The task requires taste calls you haven't made yet (naming, API shape, architectural direction). Decide first, delegate second.
+- The task depends on non-obvious domain facts the agent has no way to know. You can brief one or two; a whole document's worth means you're writing the code either way.
+- The failure mode is silent or expensive (migrations, destructive data operations, anything that writes to a shared system). First tasks belong in reversible corners.
+
+As your judgment of the tool sharpens, these edges move. Day-one candidates are small and legible; by month six, "small and legible" will mean something larger than it does today.
+
+## How the agent reads the repo
+
+A quick mental model, because it changes what you put in Context.
+
+A coding agent usually has a short list of tools it can invoke each turn: read a file, list a directory, search by pattern (grep), run a shell command, and edit a file. Different products wrap these differently, but the shape is consistent — the agent proposes a tool call, the harness runs it, the result comes back, and the agent decides what to do next. It doesn't see your whole repo at once; it pulls context in piece by piece.
+
+Two consequences for how you brief:
+
+- **It already knows what it can grep.** You don't need to paste the contents of a file it can trivially read. Point at the file, not the lines; the agent will fetch what it needs.
+- **It doesn't know what isn't in the code.** Decisions that live in Slack threads, PR comments, or someone's head are invisible to it. If the reason "we always do it this way" isn't written down anywhere, write it in the Context section — or don't be surprised when the agent chooses otherwise.
+
+The practical rule: brief for what the repo *can't tell the agent on its own*. Everything else is noise that pushes the useful parts of the brief further from the model's attention.
+
 ## What makes a brief work: Goal, Context, Constraints, Done
 
 A workable brief has four parts. The order matters less than the presence of all four.
