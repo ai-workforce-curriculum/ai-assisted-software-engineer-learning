@@ -32,6 +32,29 @@ Mainstream products that implement the coding-agent shape today include Anthropi
 
 The practical consequence: skills in this module are tool-agnostic. The brief you write for one of these tools will work, with small adjustments, in any of the others. Switching tools is cheap; switching briefing habits is expensive. Invest in the habits.
 
+## Picking the task
+
+Not every task is a good first task. A workable first delegation has three qualities:
+
+- **You could do it yourself.** If you can't verify the result, you can't hand the task off. Delegate from strength, not from avoidance — the review step depends on your being able to tell right from wrong on sight.
+- **It touches a bounded surface.** One or two files, one subsystem, one layer. Cross-cutting work — a repo-wide rename, a migration that spans services, a security fix that touches auth, routing, and storage at once — belongs in the decomposition modules later in this curriculum, not a first run.
+- **The right answer is known in principle.** You know what success looks like before you start. Debugging an unknown cause with an agent on your first try is two unknowns at once; you will learn neither well.
+
+If a candidate task fails any of these, split it until a sub-task passes all three, and delegate the sub-task. If no sub-task does, write this one yourself and come back once a later module has taught you how to decompose it.
+
+A separate trap is tasks that look small but aren't. "Add a feature flag" is sometimes three lines, sometimes a config change plus a service wiring plus a test plus a review gate — depending on the repo. Check the actual blast radius before you commit to delegating; a surprise fan-out in the middle of a first run is the wrong place to be learning.
+
+## What the agent sees
+
+The agent reads what's in its sandbox: your repository, usually some ambient tooling (a shell, a test runner, sometimes the open file in your editor), and whatever text you put in the brief. It does **not** see:
+
+- What you are reading on another screen.
+- Yesterday's design conversation with a teammate.
+- The architecture document in a wiki it cannot reach.
+- The convention your team enforces in review but never wrote down.
+
+Your brief is the bridge. Every piece of context that lives in your head and not in the repo is a piece you have to carry across. The habit of writing that bridge well is what this module is practicing; most of the brief format below exists because of this one gap.
+
 ## The task cycle
 
 Every delegated task runs through the same four steps. When a task goes wrong, it almost always went wrong at one of them.
